@@ -1,9 +1,9 @@
 // parameters
 box_length = 160;
 box_width = 50;
-box_height = 30;
+box_height = 50;
 
-printInOne = false;
+printInOne = true;
 
 thickness = 1;
 foilHinge_thickness = 0.5;
@@ -26,20 +26,32 @@ length = box_length + lengthCompensation;
 width = box_width;
 height = box_height;
 
+2d = false;
+
 // main
-if(printInOne){
-        basicBox();
+if (2d){
+    projection()
+        basicBox_cutter();
 } else {
-    difference(){
-        basicBox();
-        translate([-(foilHinge_width+height),length,0])
-            cube([width+2*height+2*foilHinge_width,height+foilHinge_width,10]);
-        translate([-(foilHinge_width+height),length-2*anchor_baseLength,thickness/2])
-            cube([width+2*height+2*foilHinge_width,height+foilHinge_width,10]);
+    basicBox_cutter();
+}
+
+
+// modules
+module basicBox_cutter(){
+    if(printInOne){
+            basicBox();
+    } else {
+        difference(){
+            basicBox();
+            translate([-(foilHinge_width+height),length,0])
+                cube([width+2*height+2*foilHinge_width,height+foilHinge_width,10]);
+            translate([-(foilHinge_width+height),length-2*anchor_baseLength,thickness/2])
+                cube([width+2*height+2*foilHinge_width,height+foilHinge_width,10]);
+        }
     }
 }
 
-// modules
 module basicBox(){
     linear_extrude(thickness)
     square([width, length]); //base
